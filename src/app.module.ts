@@ -22,16 +22,13 @@ import { config } from './config';
       isGlobal: true,
       load: [() => config],
     }),
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: config.database.host,
-      port: config.database.port,
-      username: config.database.username,
-      password: config.database.password,
-      database: config.database.database,
-      entities: [User, BoardColumn, Task, Invite],
-      synchronize: true, // Don't use in production!
-      logging: process.env.NODE_ENV !== 'production',
+    TypeOrmModule.forRootAsync({
+      useFactory: () => ({
+        type: 'postgres',
+        url: 'postgresql://postgres:12345@localhost:5432/task_mgmt',
+        autoLoadEntities: true,
+        synchronize: true,
+      }),
     }),
     UsersModule,
     ColumnsModule,
