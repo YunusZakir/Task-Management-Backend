@@ -1,12 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { User } from './entities/user.entity';
-import { BoardColumn } from './entities/column.entity';
-import { Task } from './entities/task.entity';
-import { Invite } from './entities/invite.entity';
 import { UsersModule } from './users/users.module';
 import { ColumnsModule } from './columns/columns.module';
 import { TasksModule } from './tasks/tasks.module';
@@ -14,20 +10,24 @@ import { InvitesModule } from './invites/invites.module';
 import { AuthModule } from './auth/auth.module';
 import { MailerService } from './mailer/mailer.service';
 import { StartupService } from './startup.service';
-import { config } from './config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [() => config],
     }),
     TypeOrmModule.forRootAsync({
-      useFactory: () => ({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
         type: 'postgres',
-        url: 'postgresql://postgres:12345@localhost:5432/task_mgmt',
+        url: configService.get<string>('DATABASE_URL'),
         autoLoadEntities: true,
-        synchronize: true,
+        synchronize: true, // ⚠️ disable in production, use migrations
+        ssl:
+          process.env.NODE_ENV === 'production'
+            ? { rejectUnauthorized: false }
+            : false,
       }),
     }),
     UsersModule,
