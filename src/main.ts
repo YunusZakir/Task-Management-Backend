@@ -22,10 +22,9 @@ async function bootstrap() {
       }),
     );
 
-    await app.listen(config.server.port);
-    console.log(
-      `Application is running on: http://localhost:${config.server.port}`,
-    );
+    const port = config.server.port;
+    await app.listen(port, '0.0.0.0');
+    console.log(`Application is running on port ${port}`);
   } catch (error) {
     console.error('Error starting the application:', error);
     process.exit(1);
