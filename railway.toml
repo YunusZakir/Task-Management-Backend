@@ -2,7 +2,7 @@ $schema = "https://railway.com/railway.schema.json"
 
 [build]
 # Default builder is Railpack; explicit declaration is optional
-# builder = "RAILPACK"
+builder = "RAILPACK"
 # Only trigger builds when server files change (helpful in monorepos)
 watchPatterns = [
   "src/**",
