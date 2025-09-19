@@ -8,8 +8,8 @@ watchPatterns = [
   "tsconfig.json",
   "tsconfig.build.json"
 ]
-# Compile TypeScript to dist/ (force install dev deps so tsc is available)
-buildCommand = "npm ci --include=dev && node ./node_modules/typescript/bin/tsc -p tsconfig.build.json"
+# Compile TypeScript to dist/ (dev deps are installed during install step)
+buildCommand = "node ./node_modules/typescript/bin/tsc -p tsconfig.build.json"
 
 [deploy]
 # Start the compiled NestJS app
