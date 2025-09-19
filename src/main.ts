@@ -9,7 +9,8 @@ async function bootstrap() {
 
     // CORS configuration
     app.enableCors({
-      origin: config.cors.origin,
+      origin: ["https://task-management-frontend-ew3l.vercel.app"],
+      methods: ["GET", "POST", "PUT", "DELETE"],
       credentials: true,
     });
 
