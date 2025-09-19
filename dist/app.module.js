@@ -21,6 +21,7 @@ const mailer_service_1 = require("./mailer/mailer.service");
 const comments_module_1 = require("./comments/comments.module");
 const history_module_1 = require("./history/history.module");
 const startup_service_1 = require("./startup.service");
+const health_controller_1 = require("./health.controller");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -55,7 +56,7 @@ exports.AppModule = AppModule = __decorate([
             comments_module_1.CommentsModule,
             history_module_1.HistoryModule,
         ],
-        controllers: [app_controller_1.AppController],
+        controllers: [app_controller_1.AppController, health_controller_1.HealthController],
         providers: [app_service_1.AppService, mailer_service_1.MailerService, startup_service_1.StartupService],
     })
 ], AppModule);
