@@ -12,6 +12,7 @@ import { MailerService } from './mailer/mailer.service';
 import { CommentsModule } from './comments/comments.module';
 import { HistoryModule } from './history/history.module';
 import { StartupService } from './startup.service';
+import { HealthController } from './health.controller';
 
 @Module({
   imports: [
@@ -44,7 +45,8 @@ import { StartupService } from './startup.service';
     CommentsModule,
     HistoryModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, HealthController],
   providers: [AppService, MailerService, StartupService],
 })
 export class AppModule {}
+

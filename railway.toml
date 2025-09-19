@@ -1,0 +1,19 @@
+$schema = "https://railway.com/railway.schema.json"
+
+[build]
+# Default builder is Railpack; explicit declaration is optional
+# builder = "RAILPACK"
+# Only trigger builds when server files change (helpful in monorepos)
+watchPatterns = [
+  "src/**",
+  "package.json",
+  "tsconfig.json",
+  "tsconfig.build.json"
+]
+# Compile TypeScript to dist/
+buildCommand = "npm run build"
+
+[deploy]
+# Start the compiled NestJS app
+startCommand = "node dist/main.js"
+healthcheckPath = "/health"
