@@ -16,7 +16,13 @@ export const config = {
     password: process.env.ADMIN_PASSWORD || 'ChangeMe123!',
   },
   cors: {
-    origin: process.env.CORS_ORIGIN || 'http://localhost:4200',
+    origin:
+      (process.env.CORS_ORIGIN && process.env.CORS_ORIGIN.split(',')) || [
+        'http://localhost:4200',
+        'http://localhost:4201',
+        'http://127.0.0.1:4200',
+        'http://127.0.0.1:4201',
+      ],
   },
   server: {
     port: parseInt(process.env.PORT || '3000', 10),

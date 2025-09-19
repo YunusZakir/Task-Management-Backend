@@ -9,9 +9,9 @@ import { JwtStrategy } from './jwt.strategy';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, Invite]), // ✅ register repositories here
+    TypeOrmModule.forFeature([User, Invite]),
     JwtModule.register({
-      secret: process.env.JWT_SECRET || 'secretKey',
+      secret: process.env.JWT_SECRET || 'your-secret-key',  // Must match the secret in config.ts
       signOptions: { expiresIn: '7d' },
     }),
   ],

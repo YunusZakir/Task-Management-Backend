@@ -16,7 +16,7 @@ export declare const config: {
         password: string;
     };
     cors: {
-        origin: string;
+        origin: string[];
     };
     server: {
         port: number;

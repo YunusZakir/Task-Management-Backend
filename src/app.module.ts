@@ -9,6 +9,8 @@ import { TasksModule } from './tasks/tasks.module';
 import { InvitesModule } from './invites/invites.module';
 import { AuthModule } from './auth/auth.module';
 import { MailerService } from './mailer/mailer.service';
+import { CommentsModule } from './comments/comments.module';
+import { HistoryModule } from './history/history.module';
 import { StartupService } from './startup.service';
 
 @Module({
@@ -21,7 +23,11 @@ import { StartupService } from './startup.service';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
-        url: configService.get<string>('DATABASE_URL'),
+        host: configService.get<string>('DB_HOST'),
+        port: parseInt(configService.get<string>('DB_PORT') || '5432', 10),
+        username: configService.get<string>('DB_USER'),
+        password: configService.get<string>('DB_PASS'),
+        database: configService.get<string>('DB_NAME'),
         autoLoadEntities: true,
         synchronize: true, // ⚠️ disable in production, use migrations
         ssl:
@@ -35,6 +41,8 @@ import { StartupService } from './startup.service';
     TasksModule,
     InvitesModule,
     AuthModule,
+    CommentsModule,
+    HistoryModule,
   ],
   controllers: [AppController],
   providers: [AppService, MailerService, StartupService],

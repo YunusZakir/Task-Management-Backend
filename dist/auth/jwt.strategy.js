@@ -13,19 +13,23 @@ exports.JwtStrategy = void 0;
 const common_1 = require("@nestjs/common");
 const passport_1 = require("@nestjs/passport");
 const passport_jwt_1 = require("passport-jwt");
+const config_1 = require("../config");
 let JwtStrategy = class JwtStrategy extends (0, passport_1.PassportStrategy)(passport_jwt_1.Strategy) {
     constructor() {
         super({
             jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
             ignoreExpiration: false,
-            secretOrKey: process.env.JWT_SECRET || 'secretKey',
+            secretOrKey: config_1.config.jwt.secret,
         });
     }
-    async validate(payload) {
+    validate(payload) {
+        if (!payload.sub || !payload.email) {
+            throw new common_1.UnauthorizedException('Invalid token payload');
+        }
         return {
-            userId: payload.sub,
+            id: payload.sub,
             email: payload.email,
-            isAdmin: payload.isAdmin,
+            isAdmin: payload.isAdmin || false,
         };
     }
 };

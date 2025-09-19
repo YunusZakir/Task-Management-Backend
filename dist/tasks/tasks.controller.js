@@ -14,19 +14,21 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TasksController = void 0;
 const common_1 = require("@nestjs/common");
-const passport_1 = require("@nestjs/passport");
 const tasks_service_1 = require("./tasks.service");
 const roles_guard_1 = require("../auth/roles.guard");
 const roles_decorator_1 = require("../auth/roles.decorator");
+const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
 let TasksController = class TasksController {
     constructor(tasksService) {
         this.tasksService = tasksService;
     }
-    create(body) {
-        return this.tasksService.create(body);
+    create(body, req) {
+        const actorId = req?.user?.id;
+        return this.tasksService.create(body, actorId);
     }
-    update(id, body) {
-        return this.tasksService.update(id, body);
+    update(id, body, req) {
+        const actorId = req?.user?.id;
+        return this.tasksService.update(id, body, actorId);
     }
     remove(id) {
         return this.tasksService.remove(id);
@@ -34,25 +36,27 @@ let TasksController = class TasksController {
 };
 exports.TasksController = TasksController;
 __decorate([
-    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt'), roles_guard_1.RolesGuard),
+    (0, common_1.UseGuards)(roles_guard_1.RolesGuard),
     (0, roles_decorator_1.AdminOnly)(),
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", void 0)
 ], TasksController.prototype, "create", null);
 __decorate([
-    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Patch)(':id'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:paramtypes", [String, Object, Object]),
     __metadata("design:returntype", void 0)
 ], TasksController.prototype, "update", null);
 __decorate([
-    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt'), roles_guard_1.RolesGuard),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.AdminOnly)(),
     (0, common_1.Delete)(':id'),
     __param(0, (0, common_1.Param)('id')),
@@ -62,6 +66,7 @@ __decorate([
 ], TasksController.prototype, "remove", null);
 exports.TasksController = TasksController = __decorate([
     (0, common_1.Controller)('tasks'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __metadata("design:paramtypes", [tasks_service_1.TasksService])
 ], TasksController);
 //# sourceMappingURL=tasks.controller.js.map

@@ -5,9 +5,10 @@ import { BoardColumn } from '../entities/column.entity';
 import { User } from '../entities/user.entity';
 import { TasksService } from './tasks.service';
 import { TasksController } from './tasks.controller';
+import { HistoryModule } from '../history/history.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Task, BoardColumn, User])],
+  imports: [TypeOrmModule.forFeature([Task, BoardColumn, User]), HistoryModule],
   providers: [TasksService],
   controllers: [TasksController],
 })

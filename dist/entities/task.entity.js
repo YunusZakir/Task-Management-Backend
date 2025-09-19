@@ -33,6 +33,18 @@ __decorate([
     __metadata("design:type", Number)
 ], Task.prototype, "orderIndex", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', length: 10, default: 'medium' }),
+    __metadata("design:type", String)
+], Task.prototype, "priority", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'date', nullable: true }),
+    __metadata("design:type", Object)
+], Task.prototype, "dueDate", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'text', nullable: true }),
+    __metadata("design:type", Object)
+], Task.prototype, "labels", void 0);
+__decorate([
     (0, typeorm_1.ManyToOne)(() => column_entity_1.BoardColumn, (column) => column.tasks, {
         onDelete: 'CASCADE',
     }),

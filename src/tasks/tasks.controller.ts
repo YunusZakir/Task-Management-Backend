@@ -1,22 +1,15 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Param,
-  Patch,
-  Post,
-  UseGuards,
-} from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import { Body, Controller, Delete, Param, Patch, Post, UseGuards, Req } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { RolesGuard } from '../auth/roles.guard';
 import { AdminOnly } from '../auth/roles.decorator';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('tasks')
+@UseGuards(JwtAuthGuard)
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @UseGuards(RolesGuard)
   @AdminOnly()
   @Post()
   create(
@@ -26,13 +19,18 @@ export class TasksController {
       description?: string;
       orderIndex: number;
       columnId: string;
+      priority?: 'low' | 'medium' | 'high';
+      dueDate?: string | null;
+      labels?: string | null;
       assigneeIds?: string[];
     },
+    @Req() req: any,
   ) {
-    return this.tasksService.create(body);
+    const actorId: string | undefined = req?.user?.id;
+    return this.tasksService.create(body, actorId);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   update(
     @Param('id') id: string,
@@ -42,13 +40,18 @@ export class TasksController {
       description: string;
       orderIndex: number;
       columnId: string;
+      priority: 'low' | 'medium' | 'high';
+      dueDate: string | null;
+      labels: string | null;
       assigneeIds: string[] | null;
     }>,
+    @Req() req: any,
   ) {
-    return this.tasksService.update(id, body);
+    const actorId: string | undefined = req?.user?.id;
+    return this.tasksService.update(id, body, actorId);
   }
 
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @AdminOnly()
   @Delete(':id')
   remove(@Param('id') id: string) {

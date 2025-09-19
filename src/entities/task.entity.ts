@@ -25,6 +25,18 @@ export class Task {
   @Column({ type: 'int' })
   orderIndex!: number;
 
+  // Task priority: low, medium, high
+  @Column({ type: 'varchar', length: 10, default: 'medium' })
+  priority!: 'low' | 'medium' | 'high';
+
+  // Optional due date
+  @Column({ type: 'date', nullable: true })
+  dueDate?: string | null;
+
+  // Comma-separated labels/tags for simplicity
+  @Column({ type: 'text', nullable: true })
+  labels?: string | null;
+
   @ManyToOne(() => BoardColumn, (column) => column.tasks, {
     onDelete: 'CASCADE',
   })

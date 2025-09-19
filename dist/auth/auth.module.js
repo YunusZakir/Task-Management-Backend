@@ -23,7 +23,7 @@ exports.AuthModule = AuthModule = __decorate([
         imports: [
             typeorm_1.TypeOrmModule.forFeature([user_entity_1.User, invite_entity_1.Invite]),
             jwt_1.JwtModule.register({
-                secret: process.env.JWT_SECRET || 'secretKey',
+                secret: process.env.JWT_SECRET || 'your-secret-key',
                 signOptions: { expiresIn: '7d' },
             }),
         ],
